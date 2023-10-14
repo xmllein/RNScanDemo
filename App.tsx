@@ -6,7 +6,10 @@ function App(): JSX.Element {
   return (
     <SafeAreaView>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      {/* 桥接原生扫描模块 */}
       {/* <Home /> */}
+
+      {/*  桥接原生扫描组件 */}
       <Home2 />
     </SafeAreaView>
   );

@@ -24,7 +24,7 @@ public class RNScanPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactApplicationContext) {
         List<ViewManager> list = new ArrayList<>();
-
+        list.add(new ScanViewManager());
         // 返回null会报错
         return list;
     }

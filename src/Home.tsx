@@ -1,10 +1,59 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  NativeModules,
+  PermissionsAndroid,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 
 export default () => {
   const [result, setResult] = useState<string>('扫码结果');
 
-  const onButtonPress = () => {};
+  // 申请权限
+  useEffect(() => {
+    requestCameraPermission();
+  }, []);
+
+  const requestCameraPermission = async () => {
+    const checkResult = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+    if (checkResult) {
+      console.log('已有相机权限');
+      return;
+    }
+
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: '申请相机权限',
+          message: '需要相机权限才能扫码',
+          buttonNeutral: '稍后询问',
+          buttonNegative: '取消',
+          buttonPositive: '确定',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('相机权限已获取');
+      } else {
+        console.log('相机权限被拒绝');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  // 调用原生扫码模块
+  const onButtonPress = () => {
+    // 找到原生模块（ScanModule）
+    const {Scan} = NativeModules;
+    console.log('Scan', Scan);
+    // 调用方法
+    Scan.startScan();
+  };
 
   return (
     <View style={styles.root}>

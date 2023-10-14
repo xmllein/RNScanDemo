@@ -47,12 +47,16 @@ export default () => {
   };
 
   // 调用原生扫码模块
-  const onButtonPress = () => {
+  const onButtonPress = async () => {
     // 找到原生模块（ScanModule）
     const {Scan} = NativeModules;
-    console.log('Scan', Scan);
-    // 调用方法
-    Scan.startScan();
+    // promise 调用方法 (推荐)
+    setResult(await Scan.startScan());
+
+    // callback 调用方法
+    // Scan.startScan2((result: string) => {
+    //   setResult(result);
+    // });
   };
 
   return (

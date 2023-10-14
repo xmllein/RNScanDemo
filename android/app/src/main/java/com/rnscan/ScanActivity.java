@@ -6,12 +6,21 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
+
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class ScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
     private static  final String TAG = ScanActivity.class.getSimpleName();
     private ZXingView zXingView;
+
+    // 用于回调 js promise
+    public static Promise promise;
+
+    // 用于回调 js callback
+    public static Callback callback;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +64,17 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
         //成功时震动手机
         vibrate();
         Log.i(TAG, "onScanQRCodeSuccess: " + result);
+        // promise 回调 (推荐)
+         promise.resolve(result);
+         promise = null;
+
+        // callback 回调
+        // callback.invoke(result);
+
+
+
+        // 退出当前页面
+        this.finish();
 
     }
 
